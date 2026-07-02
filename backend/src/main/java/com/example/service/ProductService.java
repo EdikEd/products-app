@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.enums.ProductStatus;
 import com.example.model.Product;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +12,10 @@ import java.util.List;
 public class ProductService {
 
     private final List<Product> products = new ArrayList<>(List.of(
-            new Product(1L, "Mobilný internet", BigDecimal.valueOf(15.99), true),
-            new Product(2L, "Televízia", BigDecimal.valueOf(9.99), false),
-            new Product(3L, "Volania do zahraničia", BigDecimal.valueOf(4.99), true),
-            new Product(4L, "Extra dáta", BigDecimal.valueOf(6.99), true)
+            new Product(1L, "Mobilný internet", BigDecimal.valueOf(15.99), ProductStatus.ON),
+            new Product(2L, "Televízia", BigDecimal.valueOf(9.99), ProductStatus.OFF),
+            new Product(3L, "Volania do zahraničia", BigDecimal.valueOf(4.99), ProductStatus.ON),
+            new Product(4L, "Extra dáta", BigDecimal.valueOf(6.99), ProductStatus.ON)
     ));
 
     public List<Product> getProducts() {
@@ -22,9 +23,11 @@ public class ProductService {
     }
 
     public void disableProduct(Long id) {
-        products.stream()
-                .filter(product -> product.getId().equals(id))
+        Product product = products.stream()
+                .filter(p -> p.getId().equals(id))
                 .findFirst()
-                .ifPresent(Product::disable);
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+        product.disable();
     }
 }
