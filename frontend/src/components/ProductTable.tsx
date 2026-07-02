@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getProducts } from "../api/productApi";
 import type { Product } from "../models/Product";
 import { Button } from "@mui/material";
+import { disableProduct } from "../api/productApi";
 
 import {
     Paper,
@@ -30,6 +31,15 @@ export default function ProductTable() {
             console.error(error);
         }
     }
+
+    async function handleDisableProduct(id: number) {
+    try {
+        await disableProduct(id);
+        await loadProducts();
+    } catch (error) {
+        console.error(error);
+    }
+}
 
     return (
         <TableContainer component={Paper}>
@@ -62,7 +72,10 @@ export default function ProductTable() {
 
                             <TableCell>
                                 {product.status === "ON" ? (
-                                    <Button variant="contained">
+                                    <Button
+                                        variant="contained"
+                                        onClick={() => handleDisableProduct(product.id)}
+                                    >
                                         Disable
                                     </Button>
                                 ) : (
