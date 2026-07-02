@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getProducts } from "../api/productApi";
 import type { Product } from "../models/Product";
+import { Button } from "@mui/material";
 
 import {
     Paper,
@@ -39,6 +40,7 @@ export default function ProductTable() {
                         <TableCell>Product</TableCell>
                         <TableCell>Price</TableCell>
                         <TableCell>Status</TableCell>
+                        <TableCell>Action</TableCell>
                     </TableRow>
                 </TableHead>
 
@@ -56,6 +58,18 @@ export default function ProductTable() {
 
                             <TableCell>
                                 {product.status}
+                            </TableCell>
+
+                            <TableCell>
+                                {product.status === "ON" ? (
+                                    <Button variant="contained">
+                                        Disable
+                                    </Button>
+                                ) : (
+                                    <Button variant="contained" disabled>
+                                        Disabled
+                                    </Button>
+                                )}
                             </TableCell>
 
                         </TableRow>
